@@ -1,0 +1,16 @@
+# Invoice Generator System - Requirements
+# =====================================
+
+# Required libraries for PDF generation
+reportlab>=4.0.0
+
+# Standard library modules (no installation needed):
+# - datetime (built-in)
+# - tkinter (built-in)
+# - json (built-in)
+# - csv (built-in)
+# - os (built-in)
+# - sys (built-in)
+# - uuid (built-in)
+# - typing (built-in)
+# - pathlib (built-in)
