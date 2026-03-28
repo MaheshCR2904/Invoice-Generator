@@ -1,6 +1,9 @@
 # Invoice Generator System - Requirements
 # =====================================
 
+# Web framework
+flask>=2.0.0
+
 # Required libraries for PDF generation
 reportlab>=4.0.0
 

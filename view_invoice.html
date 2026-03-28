@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}View Invoice - Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Invoice: {{ invoice.invoice_id }}</h2>
+        <a href="{{ url_for('download_pdf', invoice_id=invoice.invoice_id) }}" class="btn">Download PDF</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Customer Information</h3>
+    <table style="margin-top: 15px;">
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Name:</strong></td>
+            <td>{{ invoice.customer.name }}</td>
+        </tr>
+        {% if invoice.customer.address %}
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Address:</strong></td>
+            <td>{{ invoice.customer.address }}</td>
+        </tr>
+        {% endif %}
+        {% if invoice.customer.email %}
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Email:</strong></td>
+            <td>{{ invoice.customer.email }}</td>
+        </tr>
+        {% endif %}
+        {% if invoice.customer.phone %}
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Phone:</strong></td>
+            <td>{{ invoice.customer.phone }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Invoice Items</h3>
+    <table style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in invoice.products %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ "%.2f"|format(item.price_per_unit) }}</td>
+                <td>₹{{ "%.2f"|format(item.total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Summary</h3>
+    <table style="margin-top: 15px;">
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Subtotal:</strong></td>
+            <td>₹{{ "%.2f"|format(invoice.subtotal) }}</td>
+        </tr>
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Tax ({{ invoice.tax_rate }}%):</strong></td>
+            <td>₹{{ "%.2f"|format(invoice.tax_amount) }}</td>
+        </tr>
+        <tr>
+            <td style="width: 150px; color: #666;"><strong>Total:</strong></td>
+            <td><strong>₹{{ "%.2f"|format(invoice.total) }}</strong></td>
+        </tr>
+    </table>
+</div>
+
+{% if invoice.notes %}
+<div class="card">
+    <h3>Notes</h3>
+    <p style="margin-top: 10px;">{{ invoice.notes }}</p>
+</div>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('download_pdf', invoice_id=invoice.invoice_id) }}" class="btn">Download PDF</a>
+    <a href="{{ url_for('list_invoices') }}" class="btn btn-secondary" style="margin-left: 10px;">Back to List</a>
+</div>
+{% endblock %}
