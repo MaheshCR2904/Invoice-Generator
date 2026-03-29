@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to Invoice Generator</h2>
+    <p style="margin-top: 15px; color: #666; font-size: 18px;">
+        Create professional PDF invoices quickly and easily. Manage your billing with our simple and intuitive interface.
+    </p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ stats.total_invoices }}</h3>
+        <p>Total Invoices</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.total_amount) }}</h3>
+        <p>Total Amount</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.avg_amount) }}</h3>
+        <p>Average Amount</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Quick Actions</h3>
+    <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="{{ url_for('create_invoice') }}" class="btn">Create New Invoice</a>
+        <a href="{{ url_for('list_invoices') }}" class="btn btn-secondary">View All Invoices</a>
+        <a href="{{ url_for('create_sample') }}" class="btn btn-secondary">Create Sample Invoice</a>
+    </div>
+</div>
+
+{% if recent_invoices %}
+<div class="card">
+    <h3>Recent Invoices</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in recent_invoices %}
+            <tr>
+                <td>{{ invoice.invoice_id }}</td>
+                <td>{{ invoice.customer.name }}</td>
+                <td>{{ invoice.created_at.strftime('%Y-%m-%d') }}</td>
+                <td>₹{{ "%.2f"|format(invoice.total) }}</td>
+                <td>
+                    <a href="{{ url_for('view_invoice', invoice_id=invoice.invoice_id) }}">View</a> | 
+                    <a href="{{ url_for('download_pdf', invoice_id=invoice.invoice_id) }}">PDF</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

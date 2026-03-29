@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics - Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Invoice Statistics</h2>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ stats.total_invoices }}</h3>
+        <p>Total Invoices</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.total_amount) }}</h3>
+        <p>Total Amount</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.avg_amount) }}</h3>
+        <p>Average Amount</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.max_amount) }}</h3>
+        <p>Largest Invoice</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.min_amount) }}</h3>
+        <p>Smallest Invoice</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.0f"|format(stats.total_tax) }}</h3>
+        <p>Total Tax Collected</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Monthly Summary</h3>
+    {% if monthly_stats %}
+    <table style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Invoices</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month, data in monthly_stats.items() %}
+            <tr>
+                <td>{{ month }}</td>
+                <td>{{ data.count }}</td>
+                <td>₹{{ "%.2f"|format(data.total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="margin-top: 15px; color: #666;">No data available.</p>
+    {% endif %}
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+</div>
+{% endblock %}
